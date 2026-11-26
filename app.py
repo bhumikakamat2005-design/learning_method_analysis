@@ -47,6 +47,7 @@ def analyze():
 
     if os.path.exists(FILE_NAME):
         old_data = pd.read_csv(FILE_NAME)
+
         updated_data = pd.concat(
             [old_data, new_data],
             ignore_index=True
@@ -75,9 +76,23 @@ def analyze():
 def comparison():
 
     if os.path.exists(FILE_NAME):
+
         data = pd.read_csv(FILE_NAME)
+
+        # Sort all records by Student ID
+        data = data.sort_values(
+            by="Student ID",
+            key=lambda column: column.astype(str).str.strip().str.lower(),
+            kind="stable"
+        )
+
+        # Save sorted records to maintain correct edit/delete indexes
+        data.to_csv(FILE_NAME, index=False)
+
         data = data.reset_index(drop=True)
+
         records = data.to_dict(orient="records")
+
     else:
         records = []
 
@@ -150,6 +165,7 @@ def edit_record(record_index):
             return redirect(url_for("comparison"))
 
         except ValueError as error:
+
             record = data.iloc[record_index].to_dict()
 
             return render_template(
@@ -185,6 +201,7 @@ def delete_record():
             return redirect(url_for("comparison"))
 
         data = data.drop(index=record_index)
+
         data.to_csv(FILE_NAME, index=False)
 
     except (ValueError, pd.errors.EmptyDataError):
@@ -198,6 +215,7 @@ def delete_record():
 def analysis():
 
     if os.path.exists(FILE_NAME):
+
         data = pd.read_csv(FILE_NAME)
 
         concepts = sorted(
@@ -207,14 +225,17 @@ def analysis():
         selected_concept = request.args.get("concept", "")
 
         if selected_concept in concepts:
+
             concept_data = data[
                 data["Concept"] == selected_concept
             ]
+
         else:
             selected_concept = ""
             concept_data = data
 
         if not concept_data.empty:
+
             method_analysis = (
                 concept_data.groupby("Learning Method")
                 .agg(
@@ -227,6 +248,7 @@ def analysis():
             )
 
             results = method_analysis.to_dict(orient="records")
+
         else:
             results = []
 
@@ -258,16 +280,21 @@ def dashboard():
     not_found = False
 
     if os.path.exists(FILE_NAME):
+
         all_data = pd.read_csv(FILE_NAME)
         data = all_data.copy()
 
+        # Filter by Student ID
         if selected_student_id:
+
             data = data[
                 data["Student ID"].astype(str).str.strip().str.lower()
                 == selected_student_id.lower()
             ]
 
+        # Filter by Concept
         if selected_concept:
+
             data = data[
                 data["Concept"].astype(str).str.strip().str.lower()
                 == selected_concept.lower()
@@ -282,6 +309,7 @@ def dashboard():
 
     # STUDENT DETAILS
     if not all_data.empty:
+
         student_details = (
             all_data.groupby("Student ID")
             .agg(
@@ -295,6 +323,7 @@ def dashboard():
             .reset_index()
             .to_dict(orient="records")
         )
+
     else:
         student_details = []
 
@@ -303,11 +332,14 @@ def dashboard():
     immediate_averages = []
     delayed_averages = []
     retention_averages = []
+
     student_labels = []
     student_immediate = []
     student_delayed = []
+
     study_time = []
     study_scores = []
+
     confidence_labels = []
     confidence_scores = []
 
@@ -316,9 +348,11 @@ def dashboard():
     average_retention = 0
 
     recommendation_method = "Not available"
+
     recommendation_text = (
         "Add student learning data to receive recommendations."
     )
+
     performance_level = "Not available"
 
     # CALCULATE GRAPHS AND RECOMMENDATION
@@ -335,6 +369,7 @@ def dashboard():
         ].mean().round(2).reset_index()
 
         method_labels = method_data["Learning Method"].tolist()
+
         immediate_averages = method_data["immediate"].tolist()
         delayed_averages = method_data["delayed"].tolist()
         retention_averages = method_data["retention"].tolist()
@@ -350,20 +385,25 @@ def dashboard():
         confidence_scores = confidence_data["Immediate Score"].tolist()
 
         total_students = len(data)
+
         average_score = round(data["Immediate Score"].mean(), 2)
         average_retention = round(data["Retention"].mean(), 2)
 
         if average_score >= 85:
             performance_level = "Excellent"
+
         elif average_score >= 70:
             performance_level = "Good"
+
         elif average_score >= 50:
             performance_level = "Average"
+
         else:
             performance_level = "Needs Improvement"
 
         best_method = method_data.sort_values(
-            by="retention", ascending=False
+            by="retention",
+            ascending=False
         ).iloc[0]
 
         recommendation_method = best_method["Learning Method"]
