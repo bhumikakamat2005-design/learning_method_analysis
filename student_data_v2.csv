@@ -1,0 +1,9 @@
+Student ID,Concept,Learning Method,Study Time,Confidence,Immediate Score,Delayed Score,Retention,Score Difference
+S001,java,Notes,30.0,4,90.0,80.0,88.89,-10.0
+S001,java,Video Learning,40.0,4,85.0,65.0,76.47,-20.0
+S001,DBMS,Practice/Quiz,35.0,4,88.0,60.0,68.18,-28.0
+S001,DBMS,AI-Assisted Learning,40.0,3,90.0,82.0,91.11,-8.0
+S002,python,Practice/Quiz,25.0,3,88.0,70.0,79.55,-18.0
+S002,python,AI-Assisted Learning,38.0,4,90.0,80.0,88.89,-10.0
+S002,c language,Notes,40.0,5,92.0,80.0,86.96,-12.0
+S002,c language,Video Learning,25.0,5,95.0,88.0,92.63,-7.0

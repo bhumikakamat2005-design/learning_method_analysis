@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis Result</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f8;
+            padding: 30px;
+        }
+
+        .container {
+            width: 450px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #cccccc;
+        }
+
+        h2 {
+            text-align: center;
+            color: #263859;
+        }
+
+        p {
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        .result {
+            color: #167044;
+            font-weight: bold;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 10px;
+            padding: 10px 15px;
+            background-color: #263859;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #405b8c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Student Analysis Result</h2>
+
+    <p><b>Student ID:</b> {{ student_id }}</p>
+    <p><b>Concept Name:</b> {{ concept }}</p>
+    <p><b>Learning Method:</b> {{ learning_method }}</p>
+    <p><b>Study Time:</b> {{ study_time }} minutes</p>
+    <p><b>Confidence Level:</b> {{ confidence }}/5</p>
+    <p><b>Immediate Test Score:</b> {{ immediate_score }}</p>
+    <p><b>Delayed Test Score:</b> {{ delayed_score }}</p>
+
+    <hr>
+
+    <p>
+        <b>Knowledge Retention:</b>
+        <span class="result">{{ retention }}%</span>
+    </p>
+
+    <p>
+        <b>Score Difference:</b>
+        {{ score_difference }}
+    </p>
+
+    <a href="/">Add Another Student</a>
+    <a href="/comparison">View All Records</a>
+    <a href="/analysis">View Analysis</a>
+
+</div>
+
+</body>
+</html>
